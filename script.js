@@ -602,17 +602,9 @@ async function apiRequest(path, options = {}) {
   return response.status === 204 ? null : response.json();
 }
 
-function productImagePath(product) {
-  const slug = product.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-  const pngPath = `assets/products/${String(product.id).padStart(2, "0")}-${slug}.png`;
-  return pngPath;
-}
-
 function productImg(product) {
   const svg = productSvg(product);
-  const slug = product.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-  const pngPath = `assets/products/${String(product.id).padStart(2, "0")}-${slug}.png`;
-  return `<img src="${pngPath}" alt="${product.name}" onerror="this.onerror=null;this.src='${svg}'" />`;
+  return `<img src="${svg}" alt="${product.name}" />`;
 }
 
 function salePrice(product) {
@@ -628,23 +620,121 @@ function salePriceHtml(product) {
 }
 
 function productSvg(product) {
+  const c = product.color;
+  const a = product.accent;
   const drawings = {
-    headphones: "<circle cx='150' cy='172' r='38' fill='#ffffff'/><circle cx='310' cy='172' r='38' fill='#ffffff'/><path d='M140 165c0-72 180-72 180 0' fill='none' stroke='#ffffff' stroke-width='26' stroke-linecap='round'/><rect x='126' y='168' width='46' height='88' rx='20' fill='#171717'/><rect x='288' y='168' width='46' height='88' rx='20' fill='#171717'/>",
-    lamp: "<path d='M184 115h100l38 70H146z' fill='#ffffff'/><rect x='218' y='185' width='24' height='82' rx='12' fill='#ffffff'/><rect x='164' y='260' width='132' height='26' rx='13' fill='#171717'/><circle cx='230' cy='144' r='22' fill='#d7a23d'/>",
-    bag: "<rect x='130' y='132' width='200' height='154' rx='28' fill='#ffffff'/><path d='M178 145c0-66 104-66 104 0' fill='none' stroke='#ffffff' stroke-width='22' stroke-linecap='round'/><rect x='168' y='185' width='124' height='20' rx='10' fill='#d7a23d'/>",
-    bottles: "<rect x='132' y='132' width='78' height='150' rx='24' fill='#ffffff'/><rect x='250' y='104' width='78' height='178' rx='24' fill='#ffffff'/><rect x='154' y='100' width='34' height='42' rx='8' fill='#171717'/><rect x='272' y='72' width='34' height='42' rx='8' fill='#171717'/>",
-    watch: "<rect x='170' y='64' width='120' height='232' rx='34' fill='#ffffff'/><rect x='145' y='142' width='170' height='92' rx='28' fill='#171717'/><circle cx='230' cy='188' r='30' fill='#c94724'/>",
-    plates: "<circle cx='230' cy='188' r='102' fill='#ffffff'/><circle cx='230' cy='188' r='64' fill='none' stroke='#171717' stroke-width='16'/><circle cx='306' cy='130' r='24' fill='#0f6b61'/>",
+    headphones: `<rect x='100' y='280' width='260' height='14' rx='7' fill='${a}' opacity='.3'/>
+      <path d='M148 200 Q148 90 230 90 Q312 90 312 200' fill='none' stroke='${a}' stroke-width='18' stroke-linecap='round'/>
+      <rect x='110' y='196' width='52' height='96' rx='26' fill='${a}'/>
+      <rect x='118' y='204' width='36' height='80' rx='18' fill='#ffffff' opacity='.2'/>
+      <rect x='298' y='196' width='52' height='96' rx='26' fill='${a}'/>
+      <rect x='306' y='204' width='36' height='80' rx='18' fill='#ffffff' opacity='.2'/>
+      <circle cx='136' cy='244' r='14' fill='#ffffff' opacity='.15'/>
+      <circle cx='324' cy='244' r='14' fill='#ffffff' opacity='.15'/>
+      <circle cx='230' cy='90' r='12' fill='${a}' opacity='.6'/>`,
+    lamp: `<rect x='168' y='272' width='124' height='18' rx='9' fill='${a}' opacity='.5'/>
+      <rect x='220' y='196' width='20' height='80' rx='10' fill='${a}'/>
+      <path d='M175 196 L200 88 h60 L285 196 Z' fill='${a}'/>
+      <ellipse cx='230' cy='196' rx='60' ry='10' fill='${a}' opacity='.4'/>
+      <ellipse cx='230' cy='140' rx='28' ry='28' fill='#ffffff' opacity='.25'/>
+      <ellipse cx='222' cy='132' rx='10' ry='10' fill='#ffffff' opacity='.3'/>`,
+    bag: `<rect x='118' y='152' width='224' height='170' rx='32' fill='${a}'/>
+      <rect x='128' y='162' width='204' height='150' rx='24' fill='${a}' opacity='.7'/>
+      <path d='M168 165 Q168 100 230 100 Q292 100 292 165' fill='none' stroke='#ffffff' stroke-width='16' stroke-linecap='round'/>
+      <rect x='138' y='200' width='184' height='3' rx='1.5' fill='#ffffff' opacity='.25'/>
+      <rect x='138' y='218' width='184' height='3' rx='1.5' fill='#ffffff' opacity='.15'/>
+      <rect x='188' y='270' width='84' height='28' rx='14' fill='#ffffff' opacity='.2'/>
+      <rect x='210' y='278' width='40' height='12' rx='6' fill='#ffffff' opacity='.4'/>`,
+    bottles: `<rect x='120' y='148' width='76' height='150' rx='28' fill='${a}'/>
+      <rect x='128' y='158' width='60' height='130' rx='20' fill='#ffffff' opacity='.18'/>
+      <rect x='140' y='112' width='36' height='46' rx='14' fill='${a}' opacity='.8'/>
+      <rect x='148' y='104' width='20' height='16' rx='6' fill='#ffffff' opacity='.5'/>
+      <rect x='246' y='120' width='76' height='180' rx='28' fill='${a}' opacity='.85'/>
+      <rect x='254' y='130' width='60' height='160' rx='20' fill='#ffffff' opacity='.18'/>
+      <rect x='258' y='84' width='36' height='46' rx='14' fill='${a}' opacity='.8'/>
+      <rect x='266' y='76' width='20' height='16' rx='6' fill='#ffffff' opacity='.5'/>
+      <rect x='130' y='200' width='56' height='8' rx='4' fill='#ffffff' opacity='.3'/>
+      <rect x='256' y='190' width='56' height='8' rx='4' fill='#ffffff' opacity='.3'/>`,
+    watch: `<rect x='192' y='56' width='16' height='48' rx='8' fill='${a}' opacity='.7'/>
+      <rect x='252' y='56' width='16' height='48' rx='8' fill='${a}' opacity='.7'/>
+      <rect x='192' y='296' width='16' height='48' rx='8' fill='${a}' opacity='.7'/>
+      <rect x='252' y='296' width='16' height='48' rx='8' fill='${a}' opacity='.7'/>
+      <rect x='158' y='100' width='144' height='200' rx='40' fill='${a}'/>
+      <rect x='166' y='112' width='128' height='176' rx='32' fill='#0a0a0a'/>
+      <rect x='174' y='122' width='112' height='156' rx='24' fill='#0f1822'/>
+      <circle cx='230' cy='200' r='42' fill='none' stroke='${a}' stroke-width='4' opacity='.3'/>
+      <path d='M230 162 L230 200 L256 200' stroke='#ffffff' stroke-width='6' stroke-linecap='round' stroke-linejoin='round' fill='none'/>
+      <circle cx='230' cy='200' r='5' fill='#ffffff'/>
+      <rect x='186' y='256' width='88' height='12' rx='6' fill='#ffffff' opacity='.15'/>`,
+    plates: `<ellipse cx='230' cy='310' rx='130' ry='18' fill='#000000' opacity='.12'/>
+      <circle cx='230' cy='200' r='118' fill='${a}'/>
+      <circle cx='230' cy='200' r='100' fill='${a}' opacity='.7'/>
+      <circle cx='230' cy='200' r='80' fill='#ffffff' opacity='.12'/>
+      <circle cx='230' cy='200' r='58' fill='#ffffff' opacity='.08'/>
+      <circle cx='230' cy='200' r='30' fill='#ffffff' opacity='.1'/>
+      <circle cx='276' cy='152' r='28' fill='${a}' opacity='.9'/>
+      <circle cx='276' cy='152' r='18' fill='#ffffff' opacity='.2'/>`,
     jacket: "<path d='M150 118l54-34h52l54 34 38 168h-88l-30-94-30 94h-88z' fill='#ffffff'/><path d='M230 86v188' stroke='#171717' stroke-width='14'/><path d='M175 166h45M240 166h45' stroke='#2f5e90' stroke-width='14' stroke-linecap='round'/>",
-    serum: "<rect x='142' y='112' width='74' height='174' rx='26' fill='#ffffff'/><rect x='246' y='112' width='74' height='174' rx='26' fill='#ffffff'/><path d='M156 100h46M260 100h46' stroke='#171717' stroke-width='20' stroke-linecap='round'/><circle cx='230' cy='205' r='24' fill='#ff845f'/>",
+    serum: `<rect x='130' y='128' width='80' height='180' rx='32' fill='${a}'/>
+      <rect x='140' y='138' width='60' height='160' rx='24' fill='#ffffff' opacity='.15'/>
+      <rect x='148' y='96' width='44' height='42' rx='16' fill='${a}' opacity='.8'/>
+      <rect x='158' y='88' width='24' height='16' rx='6' fill='#ffffff' opacity='.5'/>
+      <rect x='136' y='180' width='68' height='6' rx='3' fill='#ffffff' opacity='.3'/>
+      <rect x='250' y='128' width='80' height='180' rx='32' fill='${a}' opacity='.85'/>
+      <rect x='260' y='138' width='60' height='160' rx='24' fill='#ffffff' opacity='.15'/>
+      <rect x='268' y='96' width='44' height='42' rx='16' fill='${a}' opacity='.8'/>
+      <rect x='278' y='88' width='24' height='16' rx='6' fill='#ffffff' opacity='.5'/>
+      <circle cx='185' cy='225' r='22' fill='#ffffff' opacity='.15'/>
+      <circle cx='298' cy='210' r='18' fill='#ffffff' opacity='.12'/>`,
     coffee: "<path d='M160 150h132v86c0 34-28 62-62 62h-8c-34 0-62-28-62-62z' fill='#ffffff'/><path d='M292 176h24c30 0 30 48 0 48h-24' fill='none' stroke='#ffffff' stroke-width='18'/><path d='M170 306h140' stroke='#171717' stroke-width='18' stroke-linecap='round'/><path d='M190 108c-18-28 28-28 10-56M238 108c-18-28 28-28 10-56' stroke='#ffffff' stroke-width='12' stroke-linecap='round'/>",
     yoga: "<rect x='108' y='214' width='245' height='58' rx='29' fill='#ffffff'/><rect x='134' y='168' width='245' height='58' rx='29' fill='#171717' opacity='.88'/><path d='M120 300h230' stroke='#ffffff' stroke-width='18' stroke-linecap='round'/><circle cx='132' cy='243' r='19' fill='#4fc0af'/>",
-    speaker: "<rect x='122' y='118' width='216' height='180' rx='42' fill='#ffffff'/><circle cx='190' cy='208' r='46' fill='#171717'/><circle cx='270' cy='208' r='46' fill='#171717'/><circle cx='190' cy='208' r='18' fill='#ff845f'/><circle cx='270' cy='208' r='18' fill='#ff845f'/>",
+    speaker: `<rect x='100' y='130' width='260' height='200' rx='50' fill='${a}'/>
+      <rect x='110' y='140' width='240' height='180' rx='40' fill='#ffffff' opacity='.08'/>
+      <circle cx='175' cy='225' r='54' fill='#0a0a0a'/>
+      <circle cx='175' cy='225' r='38' fill='#1a1a1a'/>
+      <circle cx='175' cy='225' r='20' fill='${a}'/>
+      <circle cx='175' cy='225' r='8' fill='#ffffff' opacity='.4'/>
+      <circle cx='285' cy='225' r='54' fill='#0a0a0a'/>
+      <circle cx='285' cy='225' r='38' fill='#1a1a1a'/>
+      <circle cx='285' cy='225' r='20' fill='${a}'/>
+      <circle cx='285' cy='225' r='8' fill='#ffffff' opacity='.4'/>
+      <rect x='186' y='140' width='88' height='6' rx='3' fill='#ffffff' opacity='.15'/>
+      <rect x='196' y='154' width='68' height='4' rx='2' fill='#ffffff' opacity='.1'/>`,
     shoes: "<path d='M112 238c70 18 125 9 179-34 42 14 64 33 68 62H118c-18 0-24-19-6-28z' fill='#ffffff'/><path d='M110 266h252' stroke='#171717' stroke-width='18' stroke-linecap='round'/><path d='M188 202l52 30M214 188l52 30' stroke='#0f6b61' stroke-width='10' stroke-linecap='round'/>",
-    candles: "<rect x='112' y='162' width='70' height='120' rx='18' fill='#ffffff'/><rect x='196' y='130' width='70' height='152' rx='18' fill='#ffffff'/><rect x='280' y='174' width='70' height='108' rx='18' fill='#ffffff'/><path d='M147 134c18 20-16 22 0 42M231 102c18 20-16 22 0 42M315 146c18 20-16 22 0 42' stroke='#d7a23d' stroke-width='10' stroke-linecap='round'/>",
-    knives: "<path d='M126 294l210-210 28 28-210 210z' fill='#ffffff'/><path d='M108 312l42-42 40 40-42 42z' fill='#d7a23d'/><path d='M180 262l132-132' stroke='#171717' stroke-width='10' stroke-linecap='round'/><path d='M150 116l70 70' stroke='#ffffff' stroke-width='18' stroke-linecap='round'/>",
-    bottle: "<rect x='178' y='104' width='104' height='214' rx='40' fill='#ffffff'/><rect x='198' y='70' width='64' height='48' rx='16' fill='#171717'/><path d='M188 194h84' stroke='#1e7c8d' stroke-width='22' stroke-linecap='round'/><path d='M206 82h48' stroke='#ffffff' stroke-width='8' stroke-linecap='round'/>",
-    mask: "<rect x='128' y='152' width='204' height='132' rx='36' fill='#ffffff'/><path d='M160 162h140l-26-54H186z' fill='#f7d7df'/><circle cx='192' cy='218' r='16' fill='#8b5d7a'/><circle cx='268' cy='218' r='16' fill='#8b5d7a'/><path d='M202 252h56' stroke='#171717' stroke-width='10' stroke-linecap='round'/>",
+    candles: `<rect x='96' y='168' width='74' height='140' rx='22' fill='${a}'/>
+      <rect x='104' y='178' width='58' height='120' rx='14' fill='#ffffff' opacity='.15'/>
+      <path d='M133 140 Q125 158 133 168' stroke='${a}' stroke-width='6' stroke-linecap='round' fill='none'/>
+      <ellipse cx='133' cy='135' rx='5' ry='8' fill='${a}' opacity='.8'/>
+      <rect x='193' y='136' width='74' height='172' rx='22' fill='${a}' opacity='.9'/>
+      <rect x='201' y='146' width='58' height='152' rx='14' fill='#ffffff' opacity='.15'/>
+      <path d='M230 108 Q222 126 230 136' stroke='${a}' stroke-width='6' stroke-linecap='round' fill='none'/>
+      <ellipse cx='230' cy='103' rx='5' ry='8' fill='${a}' opacity='.8'/>
+      <rect x='290' y='180' width='74' height='128' rx='22' fill='${a}' opacity='.8'/>
+      <rect x='298' y='190' width='58' height='108' rx='14' fill='#ffffff' opacity='.15'/>
+      <path d='M327 152 Q319 170 327 180' stroke='${a}' stroke-width='6' stroke-linecap='round' fill='none'/>
+      <ellipse cx='327' cy='147' rx='5' ry='8' fill='${a}' opacity='.8'/>`,
+    knives: `<rect x='102' y='292' width='256' height='14' rx='7' fill='${a}' opacity='.3'/>
+      <path d='M138 292 L298 92 Q320 70 336 86 L176 286 Z' fill='${a}'/>
+      <path d='M138 292 L298 92 Q310 80 316 86' fill='none' stroke='#ffffff' stroke-width='3' opacity='.3'/>
+      <rect x='108' y='272' width='58' height='50' rx='14' fill='${a}' opacity='.8'/>
+      <rect x='116' y='280' width='42' height='34' rx='8' fill='#ffffff' opacity='.15'/>
+      <path d='M280 110 L310 88' stroke='#ffffff' stroke-width='4' stroke-linecap='round' opacity='.4'/>
+      <path d='M172' y='248 L196 220' stroke='#ffffff' stroke-width='3' stroke-linecap='round' opacity='.25'/>`,
+    bottle: `<ellipse cx='230' cy='318' rx='62' ry='10' fill='#000000' opacity='.1'/>
+      <rect x='176' y='108' width='108' height='210' rx='48' fill='${a}'/>
+      <rect x='186' y='120' width='88' height='188' rx='38' fill='#ffffff' opacity='.12'/>
+      <rect x='196' y='68' width='68' height='50' rx='22' fill='${a}' opacity='.85'/>
+      <rect x='208' y='60' width='44' height='14' rx='6' fill='#ffffff' opacity='.5'/>
+      <rect x='186' y='188' width='88' height='8' rx='4' fill='#ffffff' opacity='.25'/>
+      <rect x='192' y='206' width='76' height='5' rx='2.5' fill='#ffffff' opacity='.15'/>
+      <circle cx='195' cy='155' r='14' fill='#ffffff' opacity='.12'/>`,
+    mask: `<rect x='116' y='156' width='228' height='148' rx='44' fill='${a}'/>
+      <rect x='126' y='166' width='208' height='128' rx='36' fill='#ffffff' opacity='.1'/>
+      <path d='M148 166 L172 110 H288 L312 166' fill='${a}' opacity='.85'/>
+      <path d='M148 166 L172 110 H288 L312 166' fill='none' stroke='#ffffff' stroke-width='3' opacity='.2'/>
+      <circle cx='185' cy='225' r='20' fill='#ffffff' opacity='.18'/>
+      <circle cx='275' cy='225' r='20' fill='#ffffff' opacity='.18'/>
+      <path d='M200 255 Q230 270 260 255' stroke='#ffffff' stroke-width='6' stroke-linecap='round' fill='none' opacity='.4'/>`,
     tablet: "<rect x='112' y='96' width='236' height='186' rx='24' fill='#ffffff'/><rect x='136' y='122' width='188' height='126' rx='12' fill='#171717'/><path d='M184 218l72-62 38 38' fill='none' stroke='#4fc0af' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/><path d='M320 284l42 42' stroke='#ffffff' stroke-width='16' stroke-linecap='round'/>",
     duffel: "<rect x='104' y='164' width='252' height='120' rx='34' fill='#ffffff'/><path d='M170 170c0-70 120-70 120 0' fill='none' stroke='#ffffff' stroke-width='20' stroke-linecap='round'/><path d='M138 222h184' stroke='#171717' stroke-width='12' stroke-linecap='round'/><circle cx='150' cy='290' r='16' fill='#0f6b61'/><circle cx='310' cy='290' r='16' fill='#0f6b61'/>",
     iphone: "<rect x='168' y='66' width='124' height='258' rx='34' fill='#ffffff'/><rect x='182' y='90' width='96' height='210' rx='22' fill='#171717'/><circle cx='230' cy='282' r='8' fill='#ffffff'/><circle cx='206' cy='112' r='9' fill='#6d8fb3'/><circle cx='230' cy='112' r='9' fill='#6d8fb3'/>",
