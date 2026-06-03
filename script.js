@@ -604,7 +604,15 @@ async function apiRequest(path, options = {}) {
 
 function productImagePath(product) {
   const slug = product.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-  return `assets/products/${String(product.id).padStart(2, "0")}-${slug}.png`;
+  const pngPath = `assets/products/${String(product.id).padStart(2, "0")}-${slug}.png`;
+  return pngPath;
+}
+
+function productImg(product) {
+  const svg = productSvg(product);
+  const slug = product.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const pngPath = `assets/products/${String(product.id).padStart(2, "0")}-${slug}.png`;
+  return `<img src="${pngPath}" alt="${product.name}" onerror="this.onerror=null;this.src='${svg}'" />`;
 }
 
 function salePrice(product) {
@@ -718,7 +726,7 @@ function renderProducts() {
   grid.innerHTML = list.length ? list.map((product) => `
     <article class="product-card">
       <button class="product-image-button" type="button" data-view="${product.id}" aria-label="View ${product.name}">
-        <img src="${productImagePath(product)}" alt="${product.name}" />
+        ${productImg(product)}
       </button>
       <div class="product-body">
         <div class="product-meta">
@@ -762,7 +770,7 @@ function renderCart() {
     const product = products.find((entry) => entry.id === item.id);
     return `
       <div class="cart-line">
-        <img src="${productImagePath(product)}" alt="${product.name}" />
+        ${productImg(product)}
         <div class="cart-line-content">
           <div class="cart-line-top">
             <strong>${product.name}</strong>
@@ -825,7 +833,7 @@ function openDetails(id) {
   $("#modalContent").innerHTML = `
     <div class="modal-product product-view">
       <div class="product-view-media">
-        <img src="${productImagePath(product)}" alt="${product.name}" />
+        ${productImg(product)}
       </div>
       <div class="product-view-info">
         <p class="eyebrow">${product.category}</p>

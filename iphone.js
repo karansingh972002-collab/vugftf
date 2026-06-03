@@ -16,26 +16,16 @@ const state = {
 };
 
 const colorImages = {
-  "Cosmic Orange": "assets/sections/iphone-17-pro-cosmic-orange.png",
-  "Deep Blue": "assets/sections/iphone-17-pro-deep-blue.png",
-  "Silver": "assets/sections/iphone-17-pro-silver.png",
-  "Space Black": "assets/sections/iphone-17-pro-space-black.png",
-  "Natural Titanium": "assets/sections/iphone-17-pro-natural-titanium.png"
+  "Cosmic Orange": "#d66a2c",
+  "Deep Blue": "#172d4f",
+  "Silver": "#d8d8d2",
+  "Space Black": "#303236",
+  "Natural Titanium": "#baae9a"
 };
 
 const models = {
-  pro: {
-    name: "iPhone 17 Pro",
-    display: "15.9 cm (6.3-inch)",
-    base: 134900,
-    image: "assets/sections/iphone-17-pro-cosmic-orange.png"
-  },
-  max: {
-    name: "iPhone 17 Pro Max",
-    display: "17.4 cm (6.9-inch)",
-    base: 149900,
-    image: "assets/sections/iphone-17-pro-cosmic-orange.png"
-  }
+  pro: { name: "iPhone 17 Pro", display: "15.9 cm (6.3-inch)", base: 134900 },
+  max: { name: "iPhone 17 Pro Max", display: "17.4 cm (6.9-inch)", base: 149900 }
 };
 
 function $(selector) {
@@ -52,15 +42,17 @@ function updateSummary() {
   const model = models[state.model];
   const total = price();
   const monthly = Math.ceil(total / 6);
-  $("#phoneImage").src = colorImages[state.color] || model.image;
+  // update SVG phone body color
+  const phoneBody = document.querySelector("#phoneImage rect:nth-child(3)");
+  if (phoneBody) phoneBody.setAttribute("fill", colorImages[state.color] || "#d66a2c");
+  document.querySelector(".hero-image").style.background =
+    `radial-gradient(circle at 72% 20%, ${state.tone}22, transparent 34%), linear-gradient(145deg, #fff9f5, #ececf1)`;
   $("#priceLine").textContent = `From ${format.format(model.base)} or ${format.format(Math.ceil(model.base / 6))}/mo.`;
   $("#colorNote").textContent = `Colour: ${state.color}`;
   $("#summaryTitle").textContent = `${model.name} ${state.storage}`;
   $("#summaryMeta").textContent = `${state.color} | ${model.display} | ${state.tradeIn ? `Trade-in ${format.format(state.tradeCredit)}` : "No trade-in"} | ${state.care ? "Protection added" : "No protection"}`;
   $("#summaryPrice").textContent = `${format.format(total)} or ${format.format(monthly)}/mo.`;
   document.documentElement.style.setProperty("--focus", `${state.tone}30`);
-  document.querySelector(".hero-image").style.background =
-    `radial-gradient(circle at 72% 20%, ${state.tone}30, transparent 34%), linear-gradient(145deg, #fff, #ececf1)`;
 }
 
 function setActive(button, selector) {
