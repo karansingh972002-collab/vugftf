@@ -1,0 +1,17 @@
+{
+  "name": "kairo-kart-ecommerce",
+  "version": "1.0.0",
+  "description": "Node.js Kairo Kart ecommerce demo website with static assets and JSON-backed demo APIs.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "ecommerce",
+    "nodejs",
+    "static-site"
+  ],
+  "author": "",
+  "license": "MIT"
+}

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "buildCommand": "",
+  "outputDirectory": ".",
+  "rewrites": [
+    { "source": "/api/health", "destination": "/api/health.js" },
+    { "source": "/api/orders", "destination": "/api/orders.js" },
+    { "source": "/api/messages", "destination": "/api/messages.js" },
+    { "source": "/api/subscribers", "destination": "/api/subscribers.js" }
+  ]
+}

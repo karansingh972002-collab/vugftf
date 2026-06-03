@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kairo Kart | Ecommerce Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav">
+        <a class="brand" href="#home" aria-label="Kairo Kart home">
+          <span class="brand-mark">K</span>
+          <span>Kairo Kart</span>
+        </a>
+        <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">Menu</button>
+        <div class="nav-links" id="navLinks">
+          <a href="#shop">Shop</a>
+          <a href="/iphone.html">iPhone 17 Pro</a>
+          <a href="#deals">Deals</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="nav-actions">
+          <span class="user-chip" id="userChip" hidden></span>
+          <button class="icon-button" id="loginButton" type="button">Login</button>
+          <button class="signup-button" id="signupButton" type="button">Sign up</button>
+          <button class="icon-button" id="logoutButton" type="button" hidden>Logout</button>
+          <button class="icon-button" id="themeToggle" type="button" aria-label="Toggle dark mode">Dark</button>
+          <button class="cart-button" id="openCart" type="button" aria-label="Open cart">
+            Cart <span id="cartCount">0</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="hero-copy">
+          <p class="eyebrow">Fresh styles. Fast checkout.</p>
+          <h1>Kairo Kart</h1>
+          <p>
+            Shop everyday tech, home essentials, apparel, and beauty products
+            with smart filters, saved cart, coupon discounts, and quick checkout.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-link" href="#shop">Start shopping</a>
+            <a class="secondary-link" href="#deals">View offers</a>
+          </div>
+        </div>
+        <div class="hero-board" aria-label="Featured store products">
+          <img class="hero-real-image" src="assets/sections/hero-store-real.png" alt="Premium ecommerce product display" />
+          <button class="hero-card large" type="button" data-search="iPhone">
+            <span>Best Seller</span>
+            <strong>iPhone collection</strong>
+          </button>
+          <button class="hero-card" type="button" data-category="Tech">
+            <span>New</span>
+            <strong>Fresh tech picks</strong>
+          </button>
+          <button class="hero-card accent" type="button" data-apply-coupon>
+            <span>Today</span>
+            <strong>25% off all iPhones</strong>
+          </button>
+        </div>
+      </section>
+
+      <section class="stats-band" aria-label="Store benefits">
+        <div>
+          <img src="assets/sections/stat-shipping.png" alt="Fast shipping visual" />
+          <strong>48h</strong>
+          <span>Fast shipping</span>
+        </div>
+        <div>
+          <img src="assets/sections/stat-returns.png" alt="Easy returns visual" />
+          <strong>30-day</strong>
+          <span>Easy returns</span>
+        </div>
+        <div>
+          <img src="assets/sections/stat-rating.png" alt="Customer rating visual" />
+          <strong>4.8/5</strong>
+          <span>Customer rating</span>
+        </div>
+        <div>
+          <img src="assets/sections/stat-support.png" alt="Support visual" />
+          <strong>24/7</strong>
+          <span>Order support</span>
+        </div>
+      </section>
+
+      <section class="section" id="shop">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Catalog</p>
+            <h2>Shop products</h2>
+          </div>
+          <p id="resultCount">Showing all products</p>
+        </div>
+
+        <img class="section-wide-image shop-products-image" src="assets/sections/iphone-collection-real.png" alt="Real iPhone product lineup for Kairo Kart shop products" />
+
+        <div class="shop-layout">
+          <aside class="filters" aria-label="Product filters">
+            <label for="searchInput">Search</label>
+            <input id="searchInput" type="search" placeholder="Search products" />
+
+            <label for="categoryFilter">Category</label>
+            <select id="categoryFilter">
+              <option value="all">All categories</option>
+            </select>
+
+            <label for="sortFilter">Sort</label>
+            <select id="sortFilter">
+              <option value="featured">Featured</option>
+              <option value="price-low">Price: low to high</option>
+              <option value="price-high">Price: high to low</option>
+              <option value="rating">Top rated</option>
+            </select>
+
+            <label for="priceRange">Max price: <span id="priceValue">$1,600</span></label>
+            <input id="priceRange" type="range" min="25" max="1600" value="1600" />
+
+            <button class="ghost-button" id="clearFilters" type="button">Clear filters</button>
+          </aside>
+
+          <div class="products-grid" id="productsGrid" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="deals" id="deals">
+        <div>
+          <p class="eyebrow">Limited offer</p>
+          <h2>25% off every iPhone</h2>
+          <p>The sale price is already active on every product. Add items to your cart and the total updates instantly.</p>
+        </div>
+        <img class="deals-image" src="assets/sections/deals-real.png" alt="Deal products with 25 percent off sale" />
+        <button class="primary-button" id="copyCoupon" type="button">Apply 25% off</button>
+      </section>
+
+      <section class="section split" id="about">
+        <div>
+          <p class="eyebrow">Why Kairo Kart</p>
+          <h2>Built for simple, confident shopping</h2>
+          <p>
+            Browse by category, inspect product details, save items in your cart,
+            update quantities, use automatic sale pricing, and place a demo order without
+            leaving the page.
+          </p>
+          <img class="section-photo" src="assets/sections/about-real.png" alt="Checkout and shopping tools on a laptop" />
+        </div>
+        <div class="service-list">
+          <article>
+            <strong>Secure demo checkout</strong>
+            <span>Form validation and order confirmation included.</span>
+            <button type="button" data-open-cart>Open checkout</button>
+          </article>
+          <article>
+            <strong>Persistent cart</strong>
+            <span>Your cart stays saved in this browser.</span>
+            <button type="button" data-category="Mobiles">Shop mobiles</button>
+          </article>
+          <article>
+            <strong>Responsive layout</strong>
+            <span>Works across desktop, tablet, and mobile screens.</span>
+            <button type="button" data-open-cart>Open cart</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="section contact-section" id="contact">
+        <div>
+          <p class="eyebrow">Questions</p>
+          <h2>Contact support</h2>
+          <p>Send a message and the page will confirm it immediately.</p>
+          <p class="support-phone">Tfn no: <a href="tel:+18336262858">+1 833 626 2858</a></p>
+          <img class="section-photo" src="assets/sections/contact-real.png" alt="Customer support desk with phone and headset" />
+        </div>
+        <form class="contact-form" id="contactForm">
+          <label>
+            Name
+            <input name="name" type="text" placeholder="Your name" required />
+          </label>
+          <label>
+            Email
+            <input name="email" type="email" placeholder="you@example.com" required />
+          </label>
+          <label>
+            Message
+            <textarea name="message" rows="4" placeholder="How can we help?" required></textarea>
+          </label>
+          <button class="primary-button" type="submit">Send message</button>
+          <p class="form-status" id="contactStatus" role="status"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <img class="footer-image" src="assets/sections/newsletter-real.png" alt="New product drops and shopping items" />
+      <form id="newsletterForm">
+        <label for="newsletterEmail">Get store updates</label>
+        <div>
+          <input id="newsletterEmail" type="email" placeholder="Email address" required />
+          <button type="submit">Subscribe</button>
+        </div>
+        <p class="form-status" id="newsletterStatus" role="status"></p>
+      </form>
+    </footer>
+
+    <div class="cart-drawer" id="cartDrawer" aria-hidden="true">
+      <div class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+        <div class="cart-head">
+          <div>
+            <p class="cart-kicker">Kairo Kart checkout</p>
+            <h2 id="cartTitle">Your cart</h2>
+          </div>
+          <span class="cart-sale-pill">25% off active</span>
+          <button class="icon-button" id="closeCart" type="button" aria-label="Close cart">Close</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <form class="coupon-row" id="couponForm">
+          <input id="couponInput" type="text" placeholder="25% sale auto applied" />
+          <button type="submit">Apply</button>
+        </form>
+        <div class="cart-benefits" id="cartBenefits">
+          <div>
+            <strong>25% sale applied</strong>
+            <span>No coupon needed</span>
+          </div>
+          <div>
+            <strong>Free shipping</strong>
+            <span>On qualifying carts</span>
+          </div>
+        </div>
+        <div class="cart-summary">
+          <div><span>Subtotal</span><strong id="subtotal">$0.00</strong></div>
+          <div><span>Discount</span><strong id="discount">$0.00</strong></div>
+          <div><span>Shipping</span><strong id="shipping">$0.00</strong></div>
+          <div class="total"><span>Total</span><strong id="total">$0.00</strong></div>
+        </div>
+        <form class="checkout-form" id="checkoutForm">
+          <div class="checkout-head">
+            <h3>Checkout</h3>
+            <span>Secure demo order</span>
+          </div>
+          <input name="fullName" type="text" placeholder="Full name" required />
+          <input name="email" type="email" placeholder="Email" required />
+          <input name="address" type="text" placeholder="Delivery address" required />
+          <div class="payment-row">
+            <input name="card" type="text" inputmode="numeric" maxlength="19" placeholder="Card number" required />
+            <input name="zip" type="text" maxlength="8" placeholder="ZIP" required />
+          </div>
+          <button class="primary-button" type="submit">Place order</button>
+          <p class="form-status" id="checkoutStatus" role="status"></p>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal" id="authModal" aria-hidden="true">
+      <div class="modal-card auth-card" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+        <button class="modal-close" id="closeAuth" type="button" aria-label="Close login form">Close</button>
+        <div class="auth-tabs" role="tablist" aria-label="Account actions">
+          <button class="active" id="authLoginTab" type="button" data-auth-mode="login">Login</button>
+          <button id="authSignupTab" type="button" data-auth-mode="signup">Sign up</button>
+        </div>
+        <form class="auth-form" id="authForm">
+          <p class="eyebrow" id="authEyebrow">Welcome back</p>
+          <h2 id="authTitle">Login to Kairo Kart</h2>
+          <label id="authNameLabel" hidden>
+            Name
+            <input id="authName" name="name" type="text" placeholder="Your name" />
+          </label>
+          <label>
+            Email
+            <input id="authEmail" name="email" type="email" placeholder="you@example.com" required />
+          </label>
+          <label>
+            Password
+            <input id="authPassword" name="password" type="password" placeholder="Enter password" minlength="4" required />
+          </label>
+          <button class="primary-button" id="authSubmit" type="submit">Login</button>
+          <p class="form-status" id="authStatus" role="status"></p>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal" id="productModal" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button class="modal-close" id="closeModal" type="button" aria-label="Close product details">Close</button>
+        <div id="modalContent"></div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
