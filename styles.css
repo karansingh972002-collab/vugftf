@@ -396,6 +396,8 @@ a {
   max-height: 430px;
   aspect-ratio: 2.55;
   object-position: center;
+  background: #ffffff;
+  object-fit: contain;
 }
 
 h2 {

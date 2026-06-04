@@ -679,9 +679,27 @@ async function apiRequest(path, options = {}) {
   return response.status === 204 ? null : response.json();
 }
 
+// Map product IDs to real image paths (add more as you add images)
+const productImages = {
+  20: "assets/products/20-iphone-16.png"
+};
+
+function handleImgError(img, id) {
+  img.onerror = null;
+  img.src = productSvg(products.find(p => p.id === id));
+  img.style.objectFit = "cover";
+}
+
 function productImg(product) {
-  const svg = productSvg(product);
-  return `<img src="${svg}" alt="${product.name}" />`;
+  if (productImages[product.id]) {
+    return `<img
+      src="${productImages[product.id]}"
+      alt="${product.name}"
+      style="background:#ffffff;object-fit:contain;"
+      onerror="handleImgError(this,${product.id})"
+    />`;
+  }
+  return `<img src="${productSvg(product)}" alt="${product.name}" />`;
 }
 
 function salePrice(product) {
