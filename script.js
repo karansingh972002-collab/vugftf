@@ -1,77 +1,5 @@
 let products = [
   {
-    id: 1,
-    name: "AeroBeat Headphones",
-    category: "Tech",
-    price: 129,
-    rating: 4.9,
-    color: "#0f6b61",
-    accent: "#d7a23d",
-    shape: "headphones",
-    description: "Wireless over-ear headphones with active noise reduction and soft memory foam pads.",
-    features: ["40-hour battery", "USB-C fast charge", "Foldable travel design"]
-  },
-  {
-    id: 2,
-    name: "Luma Desk Lamp",
-    category: "Home",
-    price: 74,
-    rating: 4.7,
-    color: "#c94724",
-    accent: "#f0ebe3",
-    shape: "lamp",
-    description: "Adjustable LED lamp with three light temperatures and a compact weighted base.",
-    features: ["Touch dimmer", "Warm and cool modes", "Low energy use"]
-  },
-  {
-    id: 3,
-    name: "Everyday Tote",
-    category: "Fashion",
-    price: 58,
-    rating: 4.6,
-    color: "#171717",
-    accent: "#d7a23d",
-    shape: "bag",
-    description: "Structured cotton canvas tote with padded laptop sleeve and internal organizer.",
-    features: ["Water-resistant finish", "Laptop compartment", "Reinforced handles"]
-  },
-  {
-    id: 4,
-    name: "Hydra Skin Set",
-    category: "Beauty",
-    price: 46,
-    rating: 4.8,
-    color: "#4fc0af",
-    accent: "#ff845f",
-    shape: "bottles",
-    description: "Daily cleanser and moisturizer set made for lightweight hydration.",
-    features: ["Gentle cleanser", "Non-greasy cream", "Travel friendly"]
-  },
-  {
-    id: 5,
-    name: "Pulse Smart Watch",
-    category: "Tech",
-    price: 199,
-    rating: 4.9,
-    color: "#084b45",
-    accent: "#c94724",
-    shape: "watch",
-    description: "Fitness watch with vivid display, sleep tracking, and water resistance.",
-    features: ["Heart-rate tracking", "GPS routes", "Swim ready"]
-  },
-  {
-    id: 6,
-    name: "Stoneware Dinner Set",
-    category: "Home",
-    price: 88,
-    rating: 4.5,
-    color: "#d7a23d",
-    accent: "#0f6b61",
-    shape: "plates",
-    description: "Six-piece matte stoneware set for calm, modern table settings.",
-    features: ["Dishwasher safe", "Microwave safe", "Stackable design"]
-  },
-  {
     id: 8,
     name: "Glow Serum Duo",
     category: "Beauty",
@@ -144,30 +72,6 @@ let products = [
     features: ["Weekly treatment", "Color-safe formula", "Soft floral scent"]
   },
   {
-    id: 17,
-    name: "ProTab Sketch Tablet",
-    category: "Tech",
-    price: 249,
-    rating: 4.8,
-    color: "#2a2f3a",
-    accent: "#4fc0af",
-    shape: "tablet",
-    description: "Slim drawing tablet with pressure-sensitive pen and shortcut controls.",
-    features: ["8192 pressure levels", "Shortcut dial", "USB-C connection"]
-  },
-  {
-    id: 18,
-    name: "Weekend Duffel Bag",
-    category: "Fashion",
-    price: 118,
-    rating: 4.7,
-    color: "#7a5031",
-    accent: "#0f6b61",
-    shape: "duffel",
-    description: "Spacious travel duffel with shoe pocket, padded strap, and durable lining.",
-    features: ["42L capacity", "Shoe compartment", "Padded shoulder strap"]
-  },
-  {
     id: 19,
     name: "iPhone 17 Pro",
     category: "Mobiles",
@@ -204,32 +108,8 @@ let products = [
     features: ["48MP main camera", "USB-C port", "Durable glass body"]
   },
   {
-    id: 22,
-    name: "MagSafe Power Bank",
-    category: "Accessories",
-    price: 79,
-    rating: 4.6,
-    color: "#f0ebe3",
-    accent: "#0f6b61",
-    shape: "powerbank",
-    description: "Slim magnetic battery pack for quick wireless charging on the go.",
-    features: ["Magnetic snap-on", "Wireless charging", "Pocket friendly"]
-  },
-  {
-    id: 23,
-    name: "AirPods Pro Style Buds",
-    category: "Accessories",
-    price: 149,
-    rating: 4.8,
-    color: "#e8edf2",
-    accent: "#22364f",
-    shape: "earbuds",
-    description: "Compact wireless earbuds with noise control, clear calls, and pocket charging case.",
-    features: ["Noise control", "Charging case", "Clear voice calls"]
-  },
-  {
     id: 24,
-    name: "UltraBook Air 14",
+    name: "MacBook Air 14",
     category: "Computers",
     price: 1199,
     rating: 4.8,
@@ -250,18 +130,6 @@ let products = [
     shape: "monitor",
     description: "Sharp 4K display with color-friendly modes for editing, browsing, and gaming.",
     features: ["4K resolution", "USB-C input", "Adjustable stand"]
-  },
-  {
-    id: 26,
-    name: "SnapShot Mini Camera",
-    category: "Tech",
-    price: 219,
-    rating: 4.6,
-    color: "#b74b39",
-    accent: "#f5efe6",
-    shape: "camera",
-    description: "Compact instant camera for travel, events, and quick printed memories.",
-    features: ["Instant prints", "Rechargeable battery", "Built-in flash"]
   },
   {
     id: 27,
@@ -649,6 +517,8 @@ let products = [
   }
 ];
 
+products = products.filter((product) => product.name.includes("iPhone") || product.name.includes("MacBook"));
+
 const state = {
   cart: JSON.parse(localStorage.getItem("urbancart-cart") || "[]")
     .filter((item) => products.some((product) => product.id === item.id)),
@@ -681,7 +551,15 @@ async function apiRequest(path, options = {}) {
 
 // Map product IDs to real image paths (add more as you add images)
 const productImages = {
-  20: "assets/products/20-iphone-16.png"
+  19: "assets/products/iphone-17-pro-user-screenshot.png",
+  20: "assets/products/20-iphone-16.png",
+  21: "assets/products/iphone-14-and-14-plus-user-screenshot.png",
+  24: "assets/products/macbook-air-14-user-screenshot.png",
+  32: "assets/products/iphone-12-user-screenshot.png",
+  33: "assets/products/iphone-12-pro-user-screenshot.png",
+  39: "assets/products/iphone-14-and-14-plus-user-screenshot.png",
+  40: "assets/products/iphone-14-and-14-plus-user-screenshot.png",
+  41: "assets/products/iphone-14-pro-user-screenshot.png"
 };
 
 function handleImgError(img, id) {
