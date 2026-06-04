@@ -562,15 +562,92 @@ let products = [
     shape: "iphonepro",
     description: "Top iPhone model with the largest display, pro camera system, and premium battery life.",
     features: ["6.9-inch display", "Pro camera system", "Best battery"]
+  },
+  {
+    id: 52,
+    name: "iPhone SE (1st gen)",
+    category: "Mobiles",
+    price: 149,
+    rating: 4.1,
+    color: "#c8c8cc",
+    accent: "#f5f5f7",
+    shape: "iphone",
+    description: "The original compact iPhone SE with Touch ID, 4-inch display, and A9 chip performance.",
+    features: ["Touch ID", "4-inch display", "A9 chip"]
+  },
+  {
+    id: 53,
+    name: "iPhone SE (2nd gen)",
+    category: "Mobiles",
+    price: 249,
+    rating: 4.3,
+    color: "#1d1d1f",
+    accent: "#d2d2d7",
+    shape: "iphone",
+    description: "Powerful compact iPhone SE with A13 Bionic chip and Touch ID home button.",
+    features: ["A13 Bionic", "Touch ID", "4.7-inch display"]
+  },
+  {
+    id: 54,
+    name: "iPhone SE (3rd gen)",
+    category: "Mobiles",
+    price: 299,
+    rating: 4.4,
+    color: "#d22b2b",
+    accent: "#ffeaea",
+    shape: "iphone",
+    description: "Latest iPhone SE with A15 Bionic chip, 5G support, and classic compact design.",
+    features: ["A15 Bionic", "5G support", "Touch ID"]
+  },
+  {
+    id: 55,
+    name: "iPhone 11",
+    category: "Mobiles",
+    price: 299,
+    rating: 4.4,
+    color: "#9bc048",
+    accent: "#f0f9e0",
+    shape: "iphone",
+    description: "Dual-camera iPhone 11 with all-day battery life, Night mode, and wide color display.",
+    features: ["Dual camera", "Night mode", "All-day battery"]
+  },
+  {
+    id: 56,
+    name: "iPhone 11 Pro",
+    category: "Mobiles",
+    price: 399,
+    rating: 4.5,
+    color: "#4e5b52",
+    accent: "#d6e8da",
+    shape: "iphonepro",
+    description: "Pro triple-camera iPhone 11 Pro with Super Retina XDR display and Midnight Green finish.",
+    features: ["Triple camera", "Super Retina XDR", "Pro performance"]
+  },
+  {
+    id: 57,
+    name: "iPhone 11 Pro Max",
+    category: "Mobiles",
+    price: 449,
+    rating: 4.6,
+    color: "#c8c0aa",
+    accent: "#f5f0e8",
+    shape: "iphonepro",
+    description: "Largest iPhone 11 Pro with exceptional battery life and triple camera system.",
+    features: ["Triple camera", "Largest display", "Best battery in iPhone 11"]
+  },
+  {
+    id: 58,
+    name: "iPhone 16e",
+    category: "Mobiles",
+    price: 599,
+    rating: 4.6,
+    color: "#2c2c2e",
+    accent: "#e5e5ea",
+    shape: "iphone",
+    description: "Affordable iPhone 16e with A16 Bionic chip, single camera, and clean modern design.",
+    features: ["A16 Bionic", "Single camera", "USB-C port"]
   }
 ];
-
-const featuredIphoneIds = [
-  19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-  32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44,
-  45, 46, 47, 48, 49, 50, 51
-];
-products = products.filter((product) => featuredIphoneIds.includes(product.id));
 
 const state = {
   cart: JSON.parse(localStorage.getItem("urbancart-cart") || "[]")
