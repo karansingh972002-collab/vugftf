@@ -4,6 +4,9 @@
   "outputDirectory": ".",
   "rewrites": [
     { "source": "/api/health", "destination": "/api/health.js" },
+    { "source": "/api/products", "destination": "/api/products.js" },
+    { "source": "/api/auth/signup", "destination": "/api/auth/signup.js" },
+    { "source": "/api/auth/login", "destination": "/api/auth/login.js" },
     { "source": "/api/orders", "destination": "/api/orders.js" },
     { "source": "/api/messages", "destination": "/api/messages.js" },
     { "source": "/api/subscribers", "destination": "/api/subscribers.js" }

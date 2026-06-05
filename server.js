@@ -41,6 +41,14 @@ function writeJson(name, value) {
   fs.writeFileSync(ensureDataFile(name), `${JSON.stringify(value, null, 2)}\n`, "utf8");
 }
 
+function publicUser(user) {
+  return {
+    id: user.id,
+    name: user.name || "",
+    email: user.email
+  };
+}
+
 function sendJson(res, status, body) {
   res.writeHead(status, {
     "Content-Type": "application/json; charset=utf-8",
@@ -86,6 +94,56 @@ function staticPath(urlPath) {
 async function handleApi(req, res, pathname) {
   if (pathname === "/api/health" && req.method === "GET") {
     sendJson(res, 200, { ok: true, app: "Kairo Kart", port: PORT });
+    return true;
+  }
+
+  if (pathname === "/api/products" && req.method === "GET") {
+    sendJson(res, 200, readJson("products"));
+    return true;
+  }
+
+  if (pathname === "/api/auth/signup" && req.method === "POST") {
+    const body = await readBody(req);
+    const email = String(body.email || "").trim().toLowerCase();
+    const password = String(body.password || "");
+    const name = String(body.name || "").trim();
+
+    if (!email || !password) {
+      sendJson(res, 400, { error: "Email and password are required" });
+      return true;
+    }
+
+    const users = readJson("users");
+    if (users.some((user) => user.email === email)) {
+      sendJson(res, 409, { error: "This email already has an account" });
+      return true;
+    }
+
+    const user = {
+      id: `U-${Date.now().toString(36)}`,
+      name,
+      email,
+      password,
+      savedAt: new Date().toISOString()
+    };
+    users.push(user);
+    writeJson("users", users);
+    sendJson(res, 201, { ok: true, user: publicUser(user) });
+    return true;
+  }
+
+  if (pathname === "/api/auth/login" && req.method === "POST") {
+    const body = await readBody(req);
+    const email = String(body.email || "").trim().toLowerCase();
+    const password = String(body.password || "");
+    const user = readJson("users").find((entry) => entry.email === email && entry.password === password);
+
+    if (!user) {
+      sendJson(res, 401, { error: "Invalid email or password" });
+      return true;
+    }
+
+    sendJson(res, 200, { ok: true, user: publicUser(user) });
     return true;
   }
 

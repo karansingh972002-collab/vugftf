@@ -533,6 +533,7 @@ const state = {
 
 const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
 const STORE_DISCOUNT = 0.25;
+const ASSET_VERSION = "2026-06-05-iphone-images";
 const $ = (selector) => document.querySelector(selector);
 const grid = $("#productsGrid");
 const cartDrawer = $("#cartDrawer");
@@ -545,28 +546,56 @@ async function apiRequest(path, options = {}) {
     headers: { "Content-Type": "application/json" },
     ...options
   });
-  if (!response.ok) throw new Error(`API request failed: ${response.status}`);
+  if (!response.ok) {
+    let message = `API request failed: ${response.status}`;
+    try {
+      const body = await response.json();
+      if (body.error) message = body.error;
+    } catch {
+      // Keep the status-based message when the response is not JSON.
+    }
+    throw new Error(message);
+  }
   return response.status === 204 ? null : response.json();
+}
+
+async function loadProductsFromBackend() {
+  try {
+    const remoteProducts = await apiRequest("/api/products");
+    if (Array.isArray(remoteProducts) && remoteProducts.length) {
+      products = remoteProducts;
+    }
+  } catch {
+    // Keep the built-in catalog if the backend is unavailable.
+  }
 }
 
 // Map product IDs to real image paths (add more as you add images)
 const productImages = {
-  19: "assets/products/iphone-17-pro-user-screenshot.png",
+  19: "assets/products/19-iphone-17-pro.png",
   20: "assets/products/20-iphone-16.png",
-  21: "assets/products/iphone-14-and-14-plus-user-screenshot.png",
-  24: "assets/products/macbook-air-14-user-screenshot.png",
-  32: "assets/products/iphone-12-user-screenshot.png",
-  33: "assets/products/iphone-12-pro-user-screenshot.png",
+  21: "assets/products/21-iphone-15.png",
+  24: "assets/products/24-ultrabook-air-14.png",
+  32: "assets/products/32-iphone-12.png",
+  33: "assets/products/33-iphone-12-pro.png",
   34: "assets/products/34-iphone-12-pro-max.png",
-  35: "assets/products/35-iphone-13-user-screenshot.png",
-  37: "assets/products/37-iphone-13-pro-user-screenshot.png",
+  35: "assets/products/35-iphone-13.png",
+  36: "assets/products/36-iphone-13-mini.png",
+  37: "assets/products/37-iphone-13-pro.png",
   38: "assets/products/38-iphone-13-pro-max.png",
-  39: "assets/products/iphone-14-and-14-plus-user-screenshot.png",
-  40: "assets/products/iphone-14-and-14-plus-user-screenshot.png",
-  41: "assets/products/iphone-14-pro-user-screenshot.png",
-  42: "assets/products/38-iphone-13-pro-max.png",
-  44: "assets/products/38-iphone-13-pro-max.png",
-  45: "assets/products/38-iphone-13-pro-max.png"
+  39: "assets/products/39-iphone-14.png",
+  40: "assets/products/40-iphone-14-plus.png",
+  41: "assets/products/41-iphone-14-pro.png",
+  42: "assets/products/42-iphone-14-pro-max.png",
+  43: "assets/products/43-iphone-15-plus.png",
+  44: "assets/products/44-iphone-15-pro.png",
+  45: "assets/products/45-iphone-15-pro-max.png",
+  46: "assets/products/46-iphone-16-plus.png",
+  47: "assets/products/47-iphone-16-pro.png",
+  48: "assets/products/48-iphone-16-pro-max.png",
+  49: "assets/products/49-iphone-17.png",
+  50: "assets/products/50-iphone-17-plus.png",
+  51: "assets/products/51-iphone-17-pro-max.png"
 };
 
 function handleImgError(img, id) {
@@ -578,7 +607,7 @@ function handleImgError(img, id) {
 function productImg(product) {
   if (productImages[product.id]) {
     return `<img
-      src="${productImages[product.id]}"
+      src="${productImages[product.id]}?v=${ASSET_VERSION}"
       alt="${product.name}"
       style="background:#ffffff;object-fit:contain;"
       onerror="handleImgError(this,${product.id})"
@@ -1054,31 +1083,53 @@ $("#authForm").addEventListener("submit", (event) => {
   const name = $("#authName").value.trim();
   const email = $("#authEmail").value.trim().toLowerCase();
   const password = $("#authPassword").value;
-  const users = savedUsers();
+  const finishAuth = (user, message) => {
+    localStorage.setItem("urbancart-current-user", JSON.stringify({ name: user.name, email: user.email }));
+    $("#authStatus").textContent = message;
+    event.target.reset();
+    renderAuthState();
+    setTimeout(closeOverlays, 700);
+  };
 
-  if (authMode === "signup") {
-    if (users.some((user) => user.email === email)) {
-      $("#authStatus").textContent = "This email already has an account. Try login.";
+  const fallbackAuth = () => {
+    const users = savedUsers();
+
+    if (authMode === "signup") {
+      if (users.some((user) => user.email === email)) {
+        $("#authStatus").textContent = "This email already has an account. Try login.";
+        return;
+      }
+      const user = { name, email, password };
+      users.push(user);
+      localStorage.setItem("urbancart-users", JSON.stringify(users));
+      finishAuth(user, "Account created in this browser. You are signed in.");
       return;
     }
-    const user = { name, email, password };
-    users.push(user);
-    localStorage.setItem("urbancart-users", JSON.stringify(users));
-    localStorage.setItem("urbancart-current-user", JSON.stringify({ name, email }));
-    $("#authStatus").textContent = "Account created. You are signed in.";
-  } else {
+
     const user = users.find((entry) => entry.email === email && entry.password === password);
     if (!user) {
       $("#authStatus").textContent = "Invalid email or password. Create an account if you are new.";
       return;
     }
-    localStorage.setItem("urbancart-current-user", JSON.stringify({ name: user.name, email: user.email }));
-    $("#authStatus").textContent = "Login successful.";
-  }
+    finishAuth(user, "Login successful.");
+  };
 
-  event.target.reset();
-  renderAuthState();
-  setTimeout(closeOverlays, 700);
+  (async () => {
+    try {
+      const path = authMode === "signup" ? "/api/auth/signup" : "/api/auth/login";
+      const response = await apiRequest(path, {
+        method: "POST",
+        body: JSON.stringify({ name, email, password })
+      });
+      finishAuth(response.user, authMode === "signup" ? "Account created. You are signed in." : "Login successful.");
+    } catch (error) {
+      if (error.message.includes("already") || error.message.includes("Invalid")) {
+        $("#authStatus").textContent = error.message;
+      } else {
+        fallbackAuth();
+      }
+    }
+  })();
 });
 
 $("#searchInput").addEventListener("input", (event) => {
@@ -1224,7 +1275,9 @@ if (localStorage.getItem("urbancart-theme") === "dark") {
   $("#themeToggle").textContent = "Light";
 }
 
-initializeFilters();
-renderProducts();
-renderCart();
-renderAuthState();
+loadProductsFromBackend().finally(() => {
+  initializeFilters();
+  renderProducts();
+  renderCart();
+  renderAuthState();
+});
