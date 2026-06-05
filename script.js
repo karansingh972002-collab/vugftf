@@ -557,9 +557,16 @@ const productImages = {
   24: "assets/products/macbook-air-14-user-screenshot.png",
   32: "assets/products/iphone-12-user-screenshot.png",
   33: "assets/products/iphone-12-pro-user-screenshot.png",
+  34: "assets/products/34-iphone-12-pro-max.png",
+  35: "assets/products/35-iphone-13-user-screenshot.png",
+  37: "assets/products/37-iphone-13-pro-user-screenshot.png",
+  38: "assets/products/38-iphone-13-pro-max.png",
   39: "assets/products/iphone-14-and-14-plus-user-screenshot.png",
   40: "assets/products/iphone-14-and-14-plus-user-screenshot.png",
-  41: "assets/products/iphone-14-pro-user-screenshot.png"
+  41: "assets/products/iphone-14-pro-user-screenshot.png",
+  42: "assets/products/38-iphone-13-pro-max.png",
+  44: "assets/products/38-iphone-13-pro-max.png",
+  45: "assets/products/38-iphone-13-pro-max.png"
 };
 
 function handleImgError(img, id) {
